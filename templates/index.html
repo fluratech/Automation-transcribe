@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Extractor</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f7f6; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        .status-box { padding: 10px; margin: 20px 0; border-radius: 4px; border: 1px solid #ddd; }
+        .active { background: #e3f2fd; color: #0d47a1; }
+        .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; background: #2196f3; color: white; text-decoration: none; display: inline-block; }
+        .btn-download { background: #4caf50; }
+        .error { color: #d32f2f; font-size: 0.9em; margin-top: 10px; }
+    </style>
+    <meta http-equiv="refresh" content="10"> <!-- Refresh every 10 seconds to see progress -->
+</head>
+<body>
+    <div class="card">
+        <h2>Math Extractor</h2>
+        
+        <div class="status-box {{ 'active' if status.active else '' }}">
+            <strong>Status:</strong> 
+            {% if status.active %}
+                Processing ({{ status.current }} / {{ status.total }})
+            {% else %}
+                Idle
+            {% endif %}
+        </div>
+
+        {% if status.error %}
+            <div class="error">⚠️ {{ status.error }}</div>
+        {% endif %}
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <p>Upload new URL list (.txt):</p>
+            <input type="file" name="file" required><br><br>
+            <button type="submit" class="btn" {% if status.active %}disabled{% endif %}>Start Extraction</button>
+        </form>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+        <a href="/download" class="btn btn-download">Download extracted_questions.txt</a>
+        <br><br>
+        <a href="/logout" style="color: #888; font-size: 0.8em;">Logout</a>
+    </div>
+</body>
+</html>
